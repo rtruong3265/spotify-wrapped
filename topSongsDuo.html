@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Top 5 Most Played Songs</title>
+    {% if profile.darkMode %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/songsDuoDark.css' %}">
+    {% elif profile == None %}
+        <!-- Modify this to test light/dark (if not logged in) -->
+        <link id="theme" rel="stylesheet" href="{% static 'TechWrapper/songsDuoLight.css' %}">
+    {% else %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/songsDuoLight.css' %}">
+    {% endif %}
+</head>
+<body>
+    <audio autoplay loop>
+        <source src="http://127.0.0.1:8000/media/audio/Feel It From The Original Series Invincible.mp3" type="audio/mp3">
+    </audio>  
+    <div class="container">
+        <div class="wrapper">
+            <h1>Top 5 Most Played Songs</h1>
+            <div class="songs-wrapper">
+                <!-- Person 1's Songs -->
+                <div class="songs-list">
+                    <h2>{{ p1User }}</h2>
+                    <div class="song-item" data-index="1">
+                        <div class="song-rank">1</div>
+                        <div class="song-info">
+                            <div class="song-name">{{ p1songOne }}</div>
+                        </div>
+                    </div>
+                    <div class="song-item" data-index="2">
+                        <div class="song-rank">2</div>
+                        <div class="song-info">
+                            <div class="song-name">{{ p1songTwo }}</div>
+                        </div>
+                    </div>
+                    <div class="song-item" data-index="3">
+                        <div class="song-rank">3</div>
+                        <div class="song-info">
+                            <div class="song-name">{{ p1songThree }}</div>
+                        </div>
+                    </div>
+                    <div class="song-item" data-index="4">
+                        <div class="song-rank">4</div>
+                        <div class="song-info">
+                            <div class="song-name">{{ p1songFour }}</div>
+                        </div>
+                    </div>
+                    <div class="song-item" data-index="5">
+                        <div class="song-rank">5</div>
+                        <div class="song-info">
+                            <div class="song-name">{{ p1songFive }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Person 2's Songs -->
+                <div class="songs-list">
+                    <h2>{{ p2User }}</h2>
+                    <div class="song-item" data-index="1">
+                        <div class="song-rank">1</div>
+                        <div class="song-info">
+                            <div class="song-name">{{ p2songOne }}</div>
+                        </div>
+                    </div>
+                    <div class="song-item" data-index="2">
+                        <div class="song-rank">2</div>
+                        <div class="song-info">
+                            <div class="song-name">{{ p2songTwo }}</div>
+                        </div>
+                    </div>
+                    <div class="song-item" data-index="3">
+                        <div class="song-rank">3</div>
+                        <div class="song-info">
+                            <div class="song-name">{{ p2songThree }}</div>
+                        </div>
+                    </div>
+                    <div class="song-item" data-index="4">
+                        <div class="song-rank">4</div>
+                        <div class="song-info">
+                            <div class="song-name">{{ p2songFour }}</div>
+                        </div>
+                    </div>
+                    <div class="song-item" data-index="5">
+                        <div class="song-rank">5</div>
+                        <div class="song-info">
+                            <div class="song-name">{{ p2songFive }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="{% url 'timeTranDuo' %}"><button class="next-button">CONTINUE</button></a>
+        </div>
+    </div>
+</body>
+</html>

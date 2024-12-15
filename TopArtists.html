@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Your Top 3 Most Listened Artists</title>
+    {% if profile.darkMode %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/TopArtistsDark.css' %}">
+    {% elif profile == None %}
+        <!-- Modify this to test light/dark (if not logged in) -->
+        <link id="theme" rel="stylesheet" href="{% static 'TechWrapper/TopArtistsLight.css' %}">
+    {% else %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/TopArtistsLight.css' %}">
+    {% endif %}
+</head>
+<body>
+    <audio autoplay loop>
+        <source src="http://127.0.0.1:8000/media/audio/BIRDS OF A FEATHER.mp3" type="audio/mp3">
+    </audio>
+    <div class="container">
+        <div class="wrapper">
+            <h1>Your Top 3 Most Listened Artists</h1>
+            <div class="artists-list">
+                <div class="artist-item" data-index="1">
+                    <div class="artist-rank">1</div>
+                    <div class="artist-info">
+                        <div class="artist-name">{{ artistOne }}</div>
+                    </div>
+                </div>
+                <div class="artist-item" data-index="2">
+                    <div class="artist-rank">2</div>
+                    <div class="artist-info">
+                        <div class="artist-name">{{ artistTwo }}</div>
+                    </div>
+                </div>
+                <div class="artist-item" data-index="3">
+                    <div class="artist-rank">3</div>
+                    <div class="artist-info">
+                        <div class="artist-name">{{ artistThree }}</div>
+                    </div>
+                </div>
+            </div>
+            <a href="{% url 'genreTransition' %}"><button class="next-button">Continue</button></a>
+        </div>
+    </div>
+</body>
+</html>

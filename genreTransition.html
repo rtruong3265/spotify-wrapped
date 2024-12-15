@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Genres Transition</title>
+    {% if profile.darkMode %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/genreTransitionDark.css' %}">
+    {% elif profile == None %}
+        <!-- Modify this to test light/dark (if not logged in) -->
+        <link id="theme" rel="stylesheet" href="{% static 'TechWrapper/genreTransitionDark.css' %}">
+    {% else %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/genreTransitionLight.css' %}">
+    {% endif %}
+</head>
+<body>
+    <audio autoplay loop>
+        <source src="http://127.0.0.1:8000/media/audio/I WISH YOU LOVE.mp3" type="audio/mp3">
+    </audio>
+    <div class="container">
+        <div class="content">
+            <h1 class="title">Your Top Genres Are Loading...</h1>
+            <p class="subtitle">Prepare to dive into the soundscapes that define your vibe.</p>
+            <a href="{% url 'topGenres' %}"><button class="button">Discover</button></a>
+        </div>
+        <div class="background">
+            <div class="blob one"></div>
+            <div class="blob two"></div>
+            <div class="blob three"></div>
+        </div>
+    </div>
+</body>
+</html>

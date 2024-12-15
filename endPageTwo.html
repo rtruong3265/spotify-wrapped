@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>That's a Wrap!</title>
+    {% if profile.darkMode %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/endPageDark.css' %}">
+    {% elif profile == None %}
+        <!-- Modify this to test light/dark (if not logged in) -->
+        <link id="theme" rel="stylesheet" href="{% static 'TechWrapper/endPageDark.css' %}">
+    {% else %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/endPageLight.css' %}">
+    {% endif %}
+</head>
+<body>
+    <audio autoplay loop>
+        <source src="http://127.0.0.1:8000/media/audio/Buzz.mp3" type="audio/mp3">
+    </audio>
+    <div class="container">
+        <div class="message">
+            <h1>That's a wrap!</h1>
+            <p>Hope you enjoyed your overview, share your music journey with your friends!</p>
+        </div>
+        <div class="share-buttons">
+            <a href="{% url 'savedWraps' %}" class="share-btn" id="whatsapp">
+                <span>Back to Saved Wraps</span>
+            </a>
+            <a href="{% url 'start' %}" class="share-btn" id="home">
+                <span>Home</span>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

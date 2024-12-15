@@ -1,0 +1,125 @@
+{% load static %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spotify Wrapped</title>
+  {% if profile.darkMode %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/wrapSumDuoDark.css' %}">
+    {% elif profile == None %}
+        <!-- Modify this to test light/dark (if not logged in) -->
+        <link id="theme" rel="stylesheet" href="{% static 'TechWrapper/wrapSumDuoLight.css' %}">
+    {% else %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/wrapSumDuoLight.css' %}">
+    {% endif %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+  <script>
+  function takeScreenshotAndRedirect(platform) {
+    // Take the screenshot using dom-to-image
+    domtoimage.toPng(document.querySelector('.wrapper'))
+      .then(function (dataUrl) {
+        // Create a temporary link to download the image
+        var link = document.createElement('a');
+        link.href = dataUrl;
+        link.download = 'spotify_wrapped_screenshot.png';
+        link.click();
+
+        // After the screenshot is taken, redirect to the respective platform
+        if (platform === 'instagram') {
+          window.location.href = 'https://www.instagram.com';
+        } else if (platform === 'facebook') {
+          window.location.href = 'https://www.facebook.com';
+        } else if (platform === 'linkedin') {
+          window.location.href = 'https://www.linkedin.com';
+        }
+      })
+      .catch(function (error) {
+        console.error('Error while capturing screenshot:', error);
+      });
+  }
+  </script>
+</head>
+<body>
+  <div class="wrapper">
+    <header class="header">
+      <h1>{{ p1User }} & {{ p2User }}'s Duo Wrapped Summary</h1>
+    </header>
+    <div class="columns">
+      <!-- User 1 -->
+      <div class="column">
+        <section class="section" id="user1-artists">
+          <h2>{{ p1User }}'s Top 3 Artists</h2>
+          <ul>
+            <li>{{ p1artistOne }}</li>
+            <li>{{ p1artistTwo }}</li>
+            <li>{{ p1artistThree }}</li>
+          </ul>
+        </section>
+        <section class="section" id="user1-songs">
+          <h2>{{ p1User }}'s Top 5 Songs</h2>
+          <ol>
+            <li>{{ p1songOne }}</li>
+            <li>{{ p1songTwo }}</li>
+            <li>{{ p1songThree }}</li>
+            <li>{{ p1songFour }}</li>
+            <li>{{ p1songFive }}</li>
+          </ol>
+        </section>
+        <section class="section" id="user1-genres">
+          <h2>{{ p1User }}'s Top 3 Genres</h2>
+          <ul>
+            <li>{{ p1genreOne }}</li>
+            <li>{{ p1genreTwo }}</li>
+            <li>{{ p1genreThree }}</li>
+          </ul>
+        </section>
+        <section class="section" id="user1-time">
+          <h2>{{ p1User }} and {{ p2User }}'s Combined Time Listened</h2>
+          <p>{{ hours }} hours and {{ minutes }} minutes</p>
+        </section>
+      </div>
+      <!-- User 2 -->
+      <div class="column">
+        <section class="section" id="user2-artists">
+          <h2>{{ p2User }}'s Top 3 Artists</h2>
+          <ul>
+            <li>{{ p2artistOne }}</li>
+            <li>{{ p2artistTwo }}</li>
+            <li>{{ p2artistThree }}</li>
+          </ul>
+        </section>
+        <section class="section" id="user2-songs">
+          <h2>{{ p2User }}'s Top 5 Songs</h2>
+          <ol>
+            <li>{{ p2songOne }}</li>
+            <li>{{ p2songTwo }}</li>
+            <li>{{ p2songThree }}</li>
+            <li>{{ p2songFour }}</li>
+            <li>{{ p2songFive }}</li>
+          </ol>
+        </section>
+        <section class="section" id="user2-genres">
+          <h2>{{ p2User }}'s Top 3 Genres</h2>
+          <ul>
+            <li>{{ p2genreOne }}</li>
+            <li>{{ p2genreTwo }}</li>
+            <li>{{ p2genreThree }}</li>
+          </ul>
+        </section>
+        <section class="section" id="user2-time">
+          <h2>{{ p1User }} and {{ p2User }}'s Combined Time Listened</h2>
+          <p>{{ hours }} hours and {{ minutes }} minutes</p>
+        </section>
+      </div>
+    </div>
+      <a href="{% url 'start' %}">
+        <button class="buttons">Home</button>
+    </a>
+    <button class="buttons" onclick="takeScreenshotAndRedirect('instagram')">Share to Instagram</button>
+    <button class="buttons" onclick="takeScreenshotAndRedirect('facebook')">Share to Facebook</button>
+    <button class="buttons" onclick="takeScreenshotAndRedirect('linkedin')">Share to LinkedIn</button>
+  </div>
+</body>
+</html>

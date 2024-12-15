@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact the Developers</title>
+    {% if profile.darkMode %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/contactDark.css' %}">
+    {% elif profile == None %}
+        <link id="theme" rel="stylesheet" href="{% static 'TechWrapper/contactLight.css' %}">
+    {% else %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/contactLight.css' %}">
+    {% endif %}
+</head>
+<body>
+    <!-- Home Button -->
+    <a href="{% url 'start' %}"><button class="home-btn" >Home</button></a>
+
+
+    <div class="hero">
+        <h1>Contact the Developers</h1>
+        <p>Discover the talented individuals behind the magic and contact them with any issues!</p>
+    </div>
+    <div class="developers-container">
+        <!-- Developer 1 -->
+        <div class="developer-card">
+            <img src="{% static 'images/sam.JPEG' %}" alt="Photo of Developer 1">
+            <h2>Frontend Developer</h2>
+            <p>Samantha Kuang is our frontend developer and created a majority of our pages and UI Design!</p>
+            <br>
+            <p>Email: <a href="mailto:sskuang23@gmail.com">sskuang23@gmail.com</a></p>
+        </div>
+
+        <!-- Developer 2 -->
+        <div class="developer-card">
+            <img src="{% static 'images/aakash.jpg' %}" alt="Photo of Developer 2">
+            <h2>Backend Developer</h2>
+            <p>Aakash Veeravalli is our backend developer and was responsible for retrieving information from the API!</p>
+            <br>
+            <p>Email: <a href="mailto:aakashveeravalli@gmail.com">aakashveeravalli@gmail.com</a></p>
+        </div>
+
+        <!-- Developer 3 -->
+        <div class="developer-card">
+            <img src="{% static 'images/randy.jpg' %}" alt="Photo of Developer 3">
+            <h2>Backend Developer</h2>
+            <p>Randy Truong is our backend developer who was responsible for user authentication and authorization to Spotify!</p>
+            <br>
+            <p>Email: <a href="mailto:rtruong3265@gmail.com">rtruong3265@gmail.com</a></p>
+        </div>
+
+        <!-- Developer 4 -->
+        <div class="developer-card">
+            <img src="{% static 'images/muskan.jpg' %}" alt="Photo of Developer 4">
+            <h2>Full Stack Developer</h2>
+            <p>Muskan Kumar is our Full Stack developer and helped connect the display to the information retrieved!</p>
+            <br>
+            <p>Email: <a href="mailto:muskannkk@gmail.com">muskannkk@gmail.com</a></p>
+        </div>
+
+        <!-- Developer 5 -->
+        <div class="developer-card">
+            <img src="{% static 'images/allen.jpg' %}" alt="Photo of Developer 5">
+            <h2>Full Stack Developer</h2>
+            <p>Allen Kim is our Full Stack Developer who was responsible for making the game and helping fix bugs!</p>
+            <br>
+            <p>Email: <a href="mailto:allen.kim.2022@gmail.com">allen.kim.2022@gmail.com</a></p>
+        </div>
+    </div>
+
+</body>
+</html>

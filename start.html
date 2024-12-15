@@ -1,0 +1,151 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Wrapper - Start</title>
+    {% if profile.darkMode %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/startDark.css' %}">
+    {% elif profile == None %}
+        <link id="theme" rel="stylesheet" href="{% static 'TechWrapper/startDark.css' %}">
+    {% else %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/startLight.css' %}">
+    {% endif %}
+    <style>
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        #userList a {
+            display: block;
+            padding: 8px;
+            text-decoration: none;
+            color: black;
+            cursor: pointer;
+        }
+
+        #userList a:hover {
+            background-color: #ddd;
+        }
+
+        /* Position the Contact Devs button at the top-right */
+        .contact-devs {
+            position: absolute;
+            top: 2px;
+            right: 30px;
+        }
+    </style>
+</head>
+<body onload="checkTheme()">
+    <!-- Contact Devs Button -->
+    <a href="{% url 'contact' %}" class="login-button contact-devs">Contact Devs</a>
+
+    <div class="container">
+        <h1 class="title">Spotify Wrapper</h1>
+        <div class="navigation">
+            <!-- Invite Friend Button with Dropdown and Search Bar -->
+            <div class="dropdown">
+                <button class="login-button">Invite Friend</button>
+                <div class="dropdown-content">
+                    <input
+                        type="text"
+                        id="usernameSearch"
+                        placeholder="Search by username..."
+                        oninput="fetchUsers(this.value)">
+                    <div id="userList"></div>
+                </div>
+            </div>
+
+            <!-- Create Wrap Button with Dropdown -->
+            <div class="dropdown">
+                <button class="login-button">Create Wrap</button>
+                <div class="dropdown-content">
+                    <a href="{% url 'refreshAuth' %}?term=short&next=/introPage/">Short</a>
+                    <a href="{% url 'refreshAuth' %}?term=medium&next=/introPage/">Medium</a>
+                    <a href="{% url 'refreshAuth' %}?term=long&next=/introPage/">Long</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button class="login-button">View Wraps / Play Game</button>
+                <div class="dropdown-content">
+                    <a href="{% url 'savedWraps' %}">View Wraps</a>
+                    <a href="{% url 'gamePage' %}">Play Game</a>
+                </div>
+            </div>
+
+            <a href={% url 'profile' %} class="login-button">Profile</a>
+        </div>
+    </div>
+
+    <!-- Hidden Form to Submit Selected Username -->
+    <form id="inviteFriendForm" method="POST" action="{% url 'invite_friend' %}" style="display: none;">
+        {% csrf_token %}
+        <input type="hidden" id="selectedUsername" name="username">
+    </form>
+
+    <script>
+        function checkTheme() {
+            const currentTheme = localStorage.getItem('theme');
+            const toggle = document.getElementById("toggleSwitch");
+            const pageColor = document.getElementById("theme");
+
+            if (currentTheme === 'dark') {
+                pageColor.href = "{% static 'TechWrapper/startDark.css' %}";
+                toggle.checked = true;
+            } else {
+                pageColor.href = "{% static 'TechWrapper/startLight.css' %}";
+                toggle.checked = false;
+            }
+        }
+
+        // Fetch users from the backend as the user types
+        async function fetchUsers(query) {
+            const userList = document.getElementById('userList');
+            userList.innerHTML = ''; // Clear previous results
+
+            if (query.trim().length === 0) {
+                return; // Do nothing if the input is empty
+            }
+
+            try {
+                const response = await fetch(`/api/search-users/?q=${encodeURIComponent(query)}`);
+                const data = await response.json();
+
+                // Populate the userList with results
+                data.forEach(username => {
+                    const userLink = document.createElement('a');
+                    userLink.textContent = username;
+                    userLink.onclick = () => inviteFriend(username); // Optionally handle inviting the user
+                    userList.appendChild(userLink);
+                });
+            } catch (error) {
+                console.error('Error fetching users:', error);
+            }
+        }
+
+        // Optional: Handle inviting the friend (you can modify this function as needed)
+        function inviteFriend(username) {
+            alert(`Invite sent to ${username}! \nDISCLAIMER: You can NOT make a new wrapped until your invite has been accepted or expired (expiration is in 30 minutes)`);
+            const hiddenInput = document.getElementById('selectedUsername');
+            hiddenInput.value = username; // Set the selected username in the hidden input
+            document.getElementById('inviteFriendForm').submit(); // Submit the form
+        }
+    </script>
+</body>
+</html>

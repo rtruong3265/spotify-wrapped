@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Saved Wraps</title>
+    {% if profile.darkMode %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/savedWrappsDark.css' %}">
+    {% elif profile == None %}
+        <!-- Modify this to test light/dark (if not logged in) -->
+        <link id="theme" rel="stylesheet" href="{% static 'TechWrapper/savedWrappsDark.css' %}">
+    {% else %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/savedWrappsLight.css' %}">
+    {% endif %}
+</head>
+<body>
+    <div class="container">
+        <h1>Your Saved Individual Wraps</h1>
+        <div class="wraps">
+            {% if wraps %}
+                {% for wrap in wraps %}
+                    <div class="wrap">
+                        <div class="wrap-image"></div>
+                        <label class="title">{{ profile.user }}'s {{ wrap.title }} Term Wrap!</label>
+                        <div class="label">{{ wrap.date }}</div>
+                        <div class="button-group">
+                            <form method="POST" action="{% url 'viewWrapped' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="wrap_id" value="{{ wrap.id }}">
+                                <button type="submit" class="clear-button" title="rewatch">
+                                    Rewatch Wrap
+                                </button>
+                            </form>
+                            <!-- Delete button with icon -->
+                            <form method="POST" action="{% url 'wrapSum' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="wrap_id" value="{{ wrap.id }}">
+                                <button type="submit" class="clear-button" title="summary">
+                                    View Summary
+                                </button>
+                            </form>
+                            <form method="POST" action="{% url 'deleteWrap' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="wrap_id" value="{{ wrap.id }}">
+                            <button type="submit" class="clear-button" title="Delete">
+                                Delete
+                            </button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="container">
+    <h1>Your Saved Duo Wraps</h1>
+        <div class="wraps">
+            {% if duoWraps %}
+                {% for wrap in duoWraps %}
+                    <div class="wrap">
+                        <div class="wrap-image"></div>
+                        <label class="title">{{ wrap.p1User }}'s and {{ wrap.p2User }}'s wrap!</label>
+                        <div class="label">{{ wrap.date }}</div>
+                        <div class="button-group">
+                           <form method="POST" action="{% url 'viewDuoWrapped' %}">
+                               {% csrf_token %}
+                               <input type="hidden" name="wrap_id" value="{{ wrap.id }}">
+                                <button type="submit" class="clear-button" title="summary">
+                                    Rewatch Wrap
+                                </button>
+                            </form>
+                            <form method="POST" action="{% url 'wrapSumDuo' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="wrap_id" value="{{ wrap.id }}">
+                                <button type="submit" class="clear-button" title="summary">
+                                    View Summary
+                                </button>
+                            </form>
+                                <form method="POST" action="{% url 'deleteWrapDuo' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="wrap_id" value="{{ wrap.id }}">
+                                <button type="submit" class="clear-button" title="Delete">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <a href="{% url 'start' %}"><button class="home-btn">Home</button></a>
+</body>
+</html>

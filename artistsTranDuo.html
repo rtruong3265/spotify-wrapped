@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transition Page</title>
+    {% if profile.darkMode %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/artistsTransitionDark.css' %}">
+    {% elif profile == None %}
+        <!-- Modify this to test light/dark (if not logged in) -->
+        <link id="theme" rel="stylesheet" href="{% static 'TechWrapper/artistsTransitionDark.css' %}">
+    {% else %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/artistsTransitionLight.css' %}">
+    {% endif %}
+</head>
+<body>
+    <audio autoplay loop>
+        <source src="http://127.0.0.1:8000/media/audio/APT.mp3" type="audio/mp3">
+    </audio>   
+    <div class="container">
+        <div class="content">
+            <h1 class="title">Say Hello To Your Top Artists</h1>
+            <p class="subtitle">Both of you have listened to hundreds of artists but gravitate to the same few...</p>
+            <a href="{% url 'topArtistsDuo' %}"><button class="button">Explore</button></a>
+        </div>
+        <div class="background">
+            <div class="circle one"></div>
+            <div class="circle two"></div>
+            <div class="circle three"></div>
+        </div>
+    </div>
+</body>
+</html>

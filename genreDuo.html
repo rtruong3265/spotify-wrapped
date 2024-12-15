@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top 3 Genres</title>
+    {% if profile.darkMode %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/genreDuoDark.css' %}">
+    {% elif profile == None %}
+        <!-- Modify this to test light/dark (if not logged in) -->
+        <link id="theme" rel="stylesheet" href="{% static 'TechWrapper/genreDuoLight.css' %}">
+    {% else %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/genreDuoLight.css' %}">
+    {% endif %}
+</head>
+<body>
+    <audio autoplay loop>
+        <source src="http://127.0.0.1:8000/media/audio/Buzz.mp3" type="audio/mp3">
+    </audio>  
+    <div class="background"></div>
+    <div class="container">
+        <div class="user">
+            <h1>{{ p1User }}'s Top 3 Genres</h1>
+            <div class="genre-cards">
+                <div class="genre-card">
+                    <div class="genre-icon" style="background-color: #ff4f81;">{{ p1genreOne }}</div>
+                    <div class="genre-name">{{ p1genreOne }}</div>
+                </div>
+                <div class="genre-card">
+                    <div class="genre-icon" style="background-color: #8e44ad;">{{ p1genreTwo }}</div>
+                    <div class="genre-name">{{ p1genreTwo }}</div>
+                </div>
+                <div class="genre-card">
+                    <div class="genre-icon" style="background-color: #3498db;">{{ p1genreThree }}</div>
+                    <div class="genre-name">{{ p1genreThree }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="user">
+            <h1>{{ p2User }}'s Top 3 Genres</h1>
+            <div class="genre-cards">
+                <div class="genre-card">
+                    <div class="genre-icon" style="background-color: #f39c12;">{{ p2genreOne }}</div>
+                    <div class="genre-name">{{ p2genreOne }}</div>
+                </div>
+                <div class="genre-card">
+                    <div class="genre-icon" style="background-color: #16a085;">{{ p2genreTwo }}</div>
+                    <div class="genre-name">{{ p2genreTwo }}</div>
+                </div>
+                <div class="genre-card">
+                    <div class="genre-icon" style="background-color: #2980b9;">{{ p2genreThree }}</div>
+                    <div class="genre-name">{{ p2genreThree }}</div>
+                </div>
+            </div>
+        </div>
+        <a href="{% url 'topSongsTranDuo' %}"><button class="continue-btn">Continue</button></a>
+    </div>
+</body>
+</html>

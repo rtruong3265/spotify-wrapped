@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Wrapped</title>
+    {% if profile.darkMode %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/introPageDark.css' %}">
+    {% elif profile == None %}
+        <!-- Modify this to test light/dark (if not logged in) -->
+        <link id="theme" rel="stylesheet" href="{% static 'TechWrapper/introPageLight.css' %}">
+    {% else %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/introPageLight.css' %}">
+    {% endif %}
+</head>
+<body>
+    <audio autoplay loop>
+        <source src="http://127.0.0.1:8000/media/audio/Please Please Please.mp3" type="audio/mp3">
+    </audio>
+    <div class="container">
+        <div class="header">
+            <h1>Welcome to Your Duo Spotify Wrapped!</h1>
+            <p>See how common {{ profile.user.username }} and {{ invProf }}'s music taste are!</p>
+        </div>
+        <div class="animated-circles">
+            <div class="circle circle1"></div>
+            <div class="circle circle2"></div>
+            <div class="circle circle3"></div>
+        </div>
+        <a href="{% url 'artistsTranDuo' %}"><button class="explore-button">Let's Dive In!</button></a>
+    </div>
+</body>
+</html>

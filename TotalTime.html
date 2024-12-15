@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Listening Time</title>
+    {% if profile.darkMode %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/TotalTimeDark.css' %}">
+    {% elif profile == None %}
+        <!-- Modify this to test light/dark (if not logged in) -->
+        <link id="theme" rel="stylesheet" href="{% static 'TechWrapper/TotalTimeLight.css' %}">
+    {% else %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/TotalTimeLight.css' %}">
+    {% endif %}
+</head>
+<body>
+    <audio autoplay loop>
+        <source src="http://127.0.0.1:8000/media/audio/Room For You.mp3" type="audio/mp3">
+    </audio>
+    <div class="container">
+        <div class="clock">
+            <div class="hour"></div>
+            <div class="minute"></div>
+        </div>
+        <h1>Your Total Time Jamming Out</h1>
+        <p id="time-listened">Hours: {{ hours }} | Minutes: {{ minutes }}</p>
+        <a href="{% url 'redirectPage' %}"><button class="continue-btn">Continue</button></a>
+    </div>
+</body>
+</html>

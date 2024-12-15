@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Listening Time</title>
+    {% if profile.darkMode %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/timeTranDuoDark.css' %}">
+    {% elif profile == None %}
+        <!-- Modify this to test light/dark (if not logged in) -->
+        <link id="theme" rel="stylesheet" href="{% static 'TechWrapper/timeTranDuoLight.css' %}">
+    {% else %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/timeTranDuoLight.css' %}">
+    {% endif %}
+</head>
+<body>
+    <audio autoplay loop>
+        <source src="http://127.0.0.1:8000/media/audio/BIRDS OF A FEATHER.mp3" type="audio/mp3">
+    </audio>  
+  <div class="container">
+    <div class="circle-container">
+      <!-- Circle for Person 1 -->
+      <div class="circle">
+        <div class="minutes">
+          ??<br>Minutes
+        </div>
+      </div>
+      <div class="text">
+        <h2>{{ p1User }}</h2>
+        <p>Total Listening Time</p>
+      </div>
+    </div>
+
+    <div class="circle-container">
+      <!-- Circle for Person 2 -->
+      <div class="circle">
+        <div class="minutes">
+          ??<br>Minutes
+        </div>
+      </div>
+      <div class="text">
+        <h2>{{ p2User }}</h2>
+        <p>Total Listening Time</p>
+      </div>
+    </div>
+  </div>
+<a href="{% url 'timeDuo' %}"><button class="button">Continue</button></a>
+</body>
+</html>

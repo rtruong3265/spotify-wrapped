@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Song</title>
+    {% if profile.darkMode %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/gameDark.css' %}">
+    {% elif profile == None %}
+        <!-- Modify this to test light/dark (if not logged in) -->
+        <link rel="stylesheet" href="{% static 'TechWrapper/gameLight.css' %}">
+    {% else %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/gameLight.css' %}">
+    {% endif %}
+</head>
+<body>
+    <header>
+        <a href="/start" class="home-button" style="text-decoration: none; color: inherit; position: absolute; top: 10px; left: 10px; font-size: 18px; font-weight: bold;">Home</a>
+        <h1 style="text-align: center;">Guess the Song</h1>
+    </header>
+    <div class="game-container">
+        <h2>Can you guess this song?</h2>
+        <audio controls>
+            <source src="/media/audio/Like%20the%20Movies%20Clip.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <form id="guessForm">
+            <div class="options">
+                <label>
+                    <input type="radio" name="answer" value="Please Please Please">
+                    Please Please Please
+                </label>
+                <label>
+                    <input type="radio" name="answer" value="I Wish You Love">
+                    I Wish You Love
+                </label>
+                <label>
+                    <input type="radio" name="answer" value="Like the Movies">
+                    Like the Movies
+                </label>
+                <label>
+                    <input type="radio" name="answer" value="Die with a Smile">
+                    Die with a Smile
+                </label>
+            </div>
+            <button type="submit" class="submit-btn" style="margin-top: 20px;">Submit</button>
+        </form>
+        <div class="result" id="result"></div>
+        <button class="retry-button" id="retryButton" style="display: none;" onclick="location.reload()">Play Again</button>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const form = document.getElementById("guessForm");
+            const resultDiv = document.getElementById("result");
+            const retryButton = document.getElementById("retryButton");
+            const correctAnswer = "Like the Movies";
+
+            form.addEventListener("submit", (event) => {
+                event.preventDefault(); // Prevent page reload
+
+                const selectedOption = document.querySelector('input[name="answer"]:checked');
+                if (!selectedOption) {
+                    resultDiv.textContent = "Please select an option!";
+                    resultDiv.style.color = "#FF0000"; // Red for error
+                    return;
+                }
+
+                const userGuess = selectedOption.value;
+
+                if (userGuess === correctAnswer) {
+                    resultDiv.textContent = "🎉 Correct! Well done!";
+                    resultDiv.style.color = "#1DB954"; // Spotify Green
+                } else {
+                    resultDiv.textContent = `❌ Incorrect. The correct answer is "${correctAnswer}".`;
+                    resultDiv.style.color = "#FF0000"; // Red
+                }
+
+                // Hide form and show retry button
+                form.style.display = "none";
+                retryButton.style.display = "block";
+            });
+        });
+    </script>
+</body>
+</html>

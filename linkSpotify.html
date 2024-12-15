@@ -1,0 +1,38 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connect Spotify</title>
+  {% if profile.darkMode %}
+      <link rel="stylesheet" href="{% static 'TechWrapper/linkSpotifyDark.css' %}">
+  {% elif profile == None %}
+      <link id="theme" rel="stylesheet" href="{% static 'TechWrapper/linkSpotifyLight.css' %}">
+  {% else %}
+      <link rel="stylesheet" href="{% static 'TechWrapper/linkSpotifyLight.css' %}">
+  {% endif %}
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Connect Spotify Account</h1>
+        <a href={% url 'spotifyLogin' %} class="login-button">Link Spotify</a>
+    </div>
+    <label class="switch">
+        <input type="checkbox" id="toggleSwitch" {% if profile.darkMode %} checked {% endif %} onclick="window.location.href='{% url 'toggleDarkMode' %}';handleToggle()">
+        <span class="slider"></span>
+    </label>
+    <script>
+        function handleToggle() {
+            const toggle = document.getElementById("toggleSwitch");
+            const pageColor = document.getElementById("theme");
+            if (toggle.checked) {
+                pageColor.href = "{% static 'TechWrapper/homePageDark.css' %}";
+            } else {
+                pageColor.href = "{% static 'TechWrapper/homePageLight.css' %}";
+            }
+        }
+    </script>
+</body>
+</html>

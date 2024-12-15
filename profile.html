@@ -1,0 +1,205 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<style>
+        /* Dropdown button and content styling */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropbtn {
+            background-color: #D8D8F0;
+            color: black;
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            z-index: 1;
+        }
+        .dropdown-content a {
+            justify-content: space-between; /* This makes sure the items are spaced apart */
+            align-items: center; /* Centers the content vertically */
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block
+        }
+
+        .dropdown-content a:hover {background-color: #f1f1f1}
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown:hover .dropbtn {
+            background-color: mediumpurple;
+        }
+
+        .invite-item {
+            display: flex;
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Space between username and buttons */
+            padding: 8px 12px; /* Add padding inside items */
+            border-bottom: 1px solid #e0e0e0; /* Add a separator */
+        }
+
+        .invite-item:last-child {
+            border-bottom: none; /* Remove the bottom border from the last item */
+        }
+
+        .invite-item:hover {
+            background-color: #f9f9f9; /* Add hover effect */
+            cursor: pointer; /* Change cursor on hover */
+        }
+
+        .username {
+            font-size: 20px; /* Adjust font size */
+            font-weight: bold; /* Make username bold */
+            color: black; /* Set text color */
+        }
+
+        .invite-buttons {
+            display: flex;
+            gap: 15px; /* Add space between buttons */
+        }
+
+        .invite-buttons button {
+            font-size: 20px; /* Bigger buttons */
+            padding: 10px 15px; /* Increased padding */
+            border: none;
+            border-radius: 50%; /* Circular buttons */
+            cursor: pointer;
+            margin-left: 8px;
+            transition: transform 0.2s ease, background-color 0.3s ease;
+        }
+
+        .check-icon,
+        .close-icon {
+            background: none; /* Remove default button styles */
+            border: none; /* Remove border */
+            font-size: 18px; /* Increase button size */
+            cursor: pointer; /* Add pointer cursor */
+            padding: 5px; /* Add padding */
+        }
+
+        .check-icon {
+            color: green; /* Green for check button */
+        }
+
+        .check-icon:hover {
+            color: darkgreen; /* Darker green on hover */
+        }
+
+        .close-icon {
+            color: red; /* Red for close button */
+        }
+
+        .close-icon:hover {
+            color: darkred; /* Darker red on hover */
+        }
+    </style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    {% if profile.darkMode %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/profileDark.css' %}">
+    {% elif profile == None %}
+        <!-- Modify this to test light/dark (if not logged in) -->
+        <link id="theme" rel="stylesheet" href="{% static 'TechWrapper/profileLight.css' %}">
+    {% else %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/profileLight.css' %}">
+    {% endif %}
+</head>
+<body onload="checkTheme()">
+    <div class="profile-page">
+        <div class="toggle-switch">
+            <label class="switch">
+                <input type="checkbox" id="toggleSwitch" {% if profile.darkMode %} checked {% endif %} onclick="window.location.href='{% url 'toggleDarkMode' %}';handleToggle()">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div class="profile-container">
+            <h1>User Profile</h1>
+            <div class="info-container">
+               <h2>Username: {{ profile.user.username }} </h2>
+                <h2>Email: {{ profile.user.email }}</h2>
+            </div>
+            <div class="button-container">
+                <button class="profile-btn" onclick="confirmAndRedirect()">
+                    Delete Profile
+                </button>
+                <a href="{% url 'linkSpotify' %}"><button class="btn spotify-btn">Connect Spotify</button></a>
+                <!-- Dropdown for View Invites -->
+                <div class="dropdown">
+                    <button class="dropbtn">View Invites</button>
+                    <div class="dropdown-content">
+                        {% if invites %}
+                            {% for invite in invites %}
+                                <div class="invite-item">
+                                    <form method="POST" class="invite-form" id="dynamic-form">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="user_id" value="{{ invite.user.id }}">
+                                        <span class="username">{{ invite.user.username }}</span>
+                                        <div class="invite-buttons">
+                                            <button class="check-icon" type="button" onclick="submitForm('{% url 'refreshAuthDuo' %}?next=/acceptInv/&userID={{ invite.user.id }}')">&#10003;</button>
+                                            <button class="close-icon" type="button" onclick="submitForm('{% url 'deleteInv' %}')">&times;</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <a href="#">No invites available</a>
+                        {% endif %}
+                    </div>
+                </div>
+                <a href="{% url 'start' %}"><button class="home-btn" >Home</button></a>
+                <a href="{% url 'home' %}"><button class="home-btn" >Log Out</button></a>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        function submitForm(actionURL){
+            const form = document.getElementById('dynamic-form');
+            form.action = actionURL;
+            form.submit();
+        }
+
+        function handleToggle() {
+            const toggle = document.getElementById("toggleSwitch");
+            const pageColor = document.getElementById("theme");
+            if (toggle.checked) {
+                pageColor.href = "{% static 'TechWrapper/profileDark.css' %}";
+                localStorage.setItem('theme', 'dark');
+            } else {
+                pageColor.href = "{% static 'TechWrapper/profileLight.css' %}";
+                localStorage.setItem('theme', 'light');
+            }
+        }
+        function checkTheme() {
+            const currentTheme = localStorage.getItem('theme');
+            const toggle = document.getElementById("toggleSwitch");
+            const pageColor = document.getElementById("theme");
+            if (currentTheme === 'dark') {
+                pageColor.href = "{% static 'TechWrapper/profileDark.css' %}";
+                toggle.checked = true;
+            } else {
+                pageColor.href = "{% static 'TechWrapper/profileLight.css' %}";
+                toggle.checked = false;
+            }
+        }
+        function confirmAndRedirect() {
+            if (confirm("Are you sure you want to delete your profile?")) {
+                // If confirmed, proceed with the redirect
+                window.location.href = "{% url 'deleteProf' %}";
+            }
+            // If not confirmed, do nothing (stays on the same page)
+        }
+    </script>
+</body>
+</html>

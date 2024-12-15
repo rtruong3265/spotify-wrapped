@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Top 5 Most Listened Songs</title>
+    {% if profile.darkMode %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/TopSongsDark.css' %}">
+    {% elif profile == None %}
+        <!-- Modify this to test light/dark (if not logged in) -->
+        <link id="theme" rel="stylesheet" href="{% static 'TechWrapper/TopSongsLight.css' %}">
+    {% else %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/TopSongsLight.css' %}">
+    {% endif %}
+</head>
+<body>
+    <audio autoplay loop>
+        <source src="http://127.0.0.1:8000/media/audio/Lady Gaga, Bruno Mars - Die With A Smile (Lyrics).mp3" type="audio/mp3">
+    </audio>
+    <div class="container">
+        <div class="wrapper">
+            <h1>Your Top 5 Most Listened Songs</h1>
+            <div class="songs-list">
+                <div class="song-item" data-index="1">
+                    <div class="song-rank">1</div>
+                    <div class="song-info">
+                        <div class="song-title">{{ songOne }}</div>
+                        <div class="song-artist">{{ artistOne }}</div>
+                    </div>
+                </div>
+                <div class="song-item" data-index="2">
+                    <div class="song-rank">2</div>
+                    <div class="song-info">
+                        <div class="song-title">{{ songTwo }}</div>
+                        <div class="song-artist">{{ artistTwo }}</div>
+                    </div>
+                </div>
+                <div class="song-item" data-index="3">
+                    <div class="song-rank">3</div>
+                    <div class="song-info">
+                        <div class="song-title">{{ songThree }}</div>
+                        <div class="song-artist">{{ artistThree }}</div>
+                    </div>
+                </div>
+                <div class="song-item" data-index="4">
+                    <div class="song-rank">4</div>
+                    <div class="song-info">
+                        <div class="song-title">{{ songFour }}</div>
+                        <div class="song-artist">{{ artistFour }}</div>
+                    </div>
+                </div>
+                <div class="song-item" data-index="5">
+                    <div class="song-rank">5</div>
+                    <div class="song-info">
+                        <div class="song-title">{{ songFive }}</div>
+                        <div class="song-artist">{{ artistFive }}</div>
+                    </div>
+                </div>
+            </div>
+            <a href="{% url 'timeTransition' %}"><button class="next-button">CONTINUE</button></a>
+        </div>
+    </div>
+</body>
+</html>

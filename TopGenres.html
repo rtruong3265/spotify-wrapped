@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Top 3 Genres</title>
+    {% if profile.darkMode %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/TopGenresDark.css' %}">
+    {% elif profile == None %}
+        <!-- Modify this to test light/dark (if not logged in) -->
+        <link id="theme" rel="stylesheet" href="{% static 'TechWrapper/TopGenresDark.css' %}">
+    {% else %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/TopGenresLight.css' %}">
+    {% endif %}
+</head>
+<body>
+    <audio autoplay loop>
+        <source src="http://127.0.0.1:8000/media/audio/do ya.mp3" type="audio/mp3">
+    </audio>
+    <div class="background"></div>
+    <div class="container">
+        <div class="genres">
+            <h1>Your Top 3 Genres</h1>
+            <div class="genre-cards">
+                <div class="genre-card">
+                    <div class="genre-icon" style="background-color: #ff4f81;">{{ genreOne }}</div>
+                    <div class="genre-name">{{ genreOne }}</div>
+                </div>
+                <div class="genre-card">
+                    <div class="genre-icon" style="background-color: #8e44ad;">{{ genreTwo }}</div>
+                    <div class="genre-name">{{ genreTwo }}</div>
+                </div>
+                <div class="genre-card">
+                    <div class="genre-icon" style="background-color: #3498db;">{{ genreThree }}</div>
+                    <div class="genre-name">{{ genreThree }}</div>
+                </div>
+            </div>
+            <a href="{% url 'songsTransition' %}"><button class="continue-btn">Continue</button></a>
+        </div>
+    </div>
+</body>
+</html>

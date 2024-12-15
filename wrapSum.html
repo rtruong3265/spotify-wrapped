@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spotify Wrapped</title>
+  {% if profile.darkMode %}
+    <link rel="stylesheet" href="{% static 'TechWrapper/wrapSumDark.css' %}">
+  {% elif profile == None %}
+    <!-- Modify this to test light/dark (if not logged in) -->
+    <link id="theme" rel="stylesheet" href="{% static 'TechWrapper/wrapSumLight.css' %}">
+  {% else %}
+    <link rel="stylesheet" href="{% static 'TechWrapper/wrapSumLight.css' %}">
+  {% endif %}
+
+  <!-- Update to the latest version of dom-to-image -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+  <script>
+  function takeScreenshotAndRedirect(platform) {
+    // Take the screenshot using dom-to-image
+    domtoimage.toPng(document.querySelector('.wrapper'))
+      .then(function (dataUrl) {
+        // Create a temporary link to download the image
+        var link = document.createElement('a');
+        link.href = dataUrl;
+        link.download = 'spotify_wrapped_screenshot.png';
+        link.click();
+
+        // After the screenshot is taken, redirect to the respective platform
+        if (platform === 'instagram') {
+          window.location.href = 'https://www.instagram.com';
+        } else if (platform === 'facebook') {
+          window.location.href = 'https://www.facebook.com';
+        } else if (platform === 'linkedin') {
+          window.location.href = 'https://www.linkedin.com';
+        }
+      })
+      .catch(function (error) {
+        console.error('Error while capturing screenshot:', error);
+      });
+  }
+  </script>
+
+</head>
+<body>
+  <div class="wrapper">
+    <header class="header">
+      <h1>{{ profile.user.username }}'s Tech Wrapped Summary</h1>
+    </header>
+    <section class="section" id="artists">
+      <h2>Top 3 Artists</h2>
+      <ul>
+        <li>{{ artistOne }}</li>
+        <li>{{ artistTwo }}</li>
+        <li>{{ artistThree }}</li>
+      </ul>
+    </section>
+    <section class="section" id="songs">
+      <h2>Top 5 Songs</h2>
+      <ol>
+        <li>{{ songOne }}</li>
+        <li>{{ songTwo }}</li>
+        <li>{{ songThree }}</li>
+        <li>{{ songFour }}</li>
+        <li>{{ songFive }}</li>
+      </ol>
+    </section>
+    <section class="section" id="genres">
+      <h2>Top 3 Genres</h2>
+      <ul>
+        <li>{{ genreOne }}</li>
+        <li>{{ genreTwo }}</li>
+        <li>{{ genreThree }}</li>
+      </ul>
+    </section>
+    <section class="section" id="time">
+      <h2>Total Time Listened</h2>
+      <p>{{ hours }} hours and {{ minutes }} minutes</p>
+    </section>
+    <a href="{% url 'start' %}">
+        <button class="buttons">Home</button>
+    </a>
+    <button class="buttons" onclick="takeScreenshotAndRedirect('instagram')">Share to Instagram</button>
+    <button class="buttons" onclick="takeScreenshotAndRedirect('facebook')">Share to Facebook</button>
+    <button class="buttons" onclick="takeScreenshotAndRedirect('linkedin')">Share to LinkedIn</button>
+  </div>
+</body>
+</html>

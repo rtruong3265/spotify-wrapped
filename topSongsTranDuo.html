@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Top Songs Transition</title>
+    {% if profile.darkMode %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/songTransitionDark.css' %}">
+    {% elif profile == None %}
+        <!-- Modify this to test light/dark (if not logged in) -->
+        <link id="theme" rel="stylesheet" href="{% static 'TechWrapper/songTransitionDark.css' %}">
+    {% else %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/songTransitionLight.css' %}">
+    {% endif %}
+</head>
+<body>
+    <audio autoplay loop>
+        <source src="http://127.0.0.1:8000/media/audio/do ya.mp3" type="audio/mp3">
+    </audio>  
+<div class="container">
+        <h1 class="title">Discover Both Of Your Top 5 Songs!</h1>
+        <p class="intro">Ready To See If You Have Any Of The Same?</p>
+        <div class="animation-wrapper">
+            <div class="circle"></div>
+            <div class="square"></div>
+            <div class="triangle"></div>
+        </div>
+        <a href="{% url 'topSongsDuo' %}"><button class="next-button">Reveal Songs</button></a>
+    </div>
+</body>
+</html>

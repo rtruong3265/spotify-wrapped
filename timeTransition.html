@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Total Minutes Listened</title>
+    {% if profile.darkMode %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/timeTransitionDark.css' %}">
+    {% elif profile == None %}
+        <!-- Modify this to test light/dark (if not logged in) -->
+        <link id="theme" rel="stylesheet" href="{% static 'TechWrapper/timeTransitionDark.css' %}">
+    {% else %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/timeTransitionLight.css' %}">
+    {% endif %}
+</head>
+<body>
+    <audio autoplay loop>
+        <source src="http://127.0.0.1:8000/media/audio/Please Please Please.mp3" type="audio/mp3">
+    </audio>
+  <div class="container">
+    <div class="circle">
+      <div class="minutes">
+        <span id="minutes">2024</span>
+      </div>
+    </div>
+    <div class="text">
+      <h2>Total Minutes Listened Loading...</h2>
+      <p>From seconds to minutes to hours, how long do you think?</p>
+    </div>
+    <a href="{% url 'totalTime' %}"><button class="button">Explore</button></a>
+
+    <script>
+    // Optionally, you can add a timer or any dynamic feature here.
+    document.addEventListener("DOMContentLoaded", function () {
+      let minutes = document.getElementById("minutes");
+      
+      // For demonstration, we can increment the total minutes every second
+      let totalMinutes = parseInt(minutes.textContent);
+      
+      setInterval(() => {
+        totalMinutes += 1;
+        minutes.textContent = totalMinutes;
+      }, 1000);
+    });
+    </script>
+</body>
+</html>

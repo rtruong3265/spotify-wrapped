@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    {% if profile.darkMode %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/registerDark.css' %}">
+    {% elif profile == None %}
+        <!-- Modify this to test light/dark (if not logged in) -->
+        <link id="theme" rel="stylesheet" href="{% static 'TechWrapper/registerDark.css' %}">
+    {% else %}
+        <link rel="stylesheet" href="{% static 'TechWrapper/registerLight.css' %}">
+    {% endif %}
+    <script>
+        function validateForm() {
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const whitespace = /\s/;
+
+            if (whitespace.test(username)) {
+                alert("Username cannot contain whitespace.");
+                return false;
+            }
+            if (whitespace.test(password)) {
+                alert("Password cannot contain whitespace.");
+                return false;
+            }
+
+            // Username should be at least 4 characters
+            if (username.length <= 3) {
+                alert("Username must be at least 4 characters long.");
+                return false;
+            }
+
+            // Password should be at least 6 characters
+            if (password.length <= 5) {
+                alert("Password must be at least 6 characters long.");
+                return false;
+            }
+
+            // Email should end with .com or .net
+            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|org|net|edu|gov)$/;
+            if (!emailPattern.test(email)) {
+                alert("Email must end with a valid email address ending (.com, .net, .edu)");
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Register</h2>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <form action="/register/" method="POST" onsubmit="return validateForm();">
+            {% csrf_token %}
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username" required
+                pattern="\S{4,}" title="Username must be at least 4 characters long and contain no whitespace">
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required
+                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|org|net|edu|gov)$"
+                title="Email must end with a valid email address ending (.com, .net, .edu)">
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required
+                pattern="\S{6,}" title="Password must be at least 6 characters long and contain no whitespace">
+
+            <button type="submit">Register</button>
+        </form>
+        <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+    </div>
+</body>
+</html>
